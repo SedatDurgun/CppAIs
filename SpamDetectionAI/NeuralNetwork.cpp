@@ -3,8 +3,8 @@
 #include <iomanip>
 #include <iostream>
 #include <fstream>
-#include <stdexcept> // std::runtime_error için
-#include <numeric> // std::accumulate için Kullanılacak  ağırlıkların ve biasların rastgele başlatılması için yardımcı fonksiyon
+#include <stdexcept> 
+#include <numeric> 
 
 using namespace std;
 namespace SpamDetectionAI
@@ -16,18 +16,18 @@ namespace SpamDetectionAI
 		m_outputs.resize(outputSize, 0.0);
 		
 
-		// Xavier Initialization (Glorot Initialization) kullanarak ağırlıkları başlat Bu yöntem, ağırlıkların başlangıçta çok büyük veya çok küçük olmamasını sağlar ve genellikle derin sinir ağlarında daha iyi performans gösterir.
+		// Xavier Initialization (Glorot Initialization) kullanarak aÃ°Ã½rlÃ½klarÃ½ baÃ¾lat Bu yÃ¶ntem, aÃ°Ã½rlÃ½klarÃ½n baÃ¾langÃ½Ã§ta Ã§ok bÃ¼yÃ¼k veya Ã§ok kÃ¼Ã§Ã¼k olmamasÃ½nÃ½ saÃ°lar ve genellikle derin sinir aÃ°larÃ½nda daha iyi performans gÃ¶sterir.
 
 		mt19937 rng(random_device{}());
 
-		double limit = sqrt(6.0 / (inputSize + outputSize)); // Xavier Initialization için limit hesaplama
+		double limit = sqrt(6.0 / (inputSize + outputSize)); // Xavier Initialization iÃ§in limit hesaplama
 		uniform_real_distribution<double> dist(-limit, limit); 
 		
 		for (auto& row: m_weights)
 		{
 			for(auto& w: row)
 			{
-				w = dist(rng); // Ağırlıkları -limit ile limit arasında rastgele başlat
+				w = dist(rng); // AÃ°Ã½rlÃ½klarÃ½ -limit ile limit arasÃ½nda rastgele baÃ¾lat
 			}
 
 		}
@@ -46,7 +46,7 @@ namespace SpamDetectionAI
 			double sum = m_biases[i];
 			for (int j = 0; j < inputSize; ++j) {
 
-				sum += m_weights[i][j] * input[j]; // Ağırlıklı toplam hesaplama
+				sum += m_weights[i][j] * input[j]; // AÃ°Ã½rlÃ½klÃ½ toplam hesaplama
 
 				m_outputs[i] = ActivationFunction::ReLU(sum); // ReLU aktivasyon 
 			} 
@@ -63,11 +63,11 @@ namespace SpamDetectionAI
 
 		for (int i = 0; i < outputSize; i++)
 		{
-			// ReLU'nun türev: output > 0 ise 1, değilse 0
+			// ReLU'nun tÃ¼rev: output > 0 ise 1, deÃ°ilse 0
 
-			double delta = gradOutput[i] * ActivationFunction::ReLUDerivative(m_outputs[i]); // Çıkış hatası ile ReLU'nun türevi çarpılır
+			double delta = gradOutput[i] * ActivationFunction::ReLUDerivative(m_outputs[i]); // Ã‡Ã½kÃ½Ã¾ hatasÃ½ ile ReLU'nun tÃ¼revi Ã§arpÃ½lÃ½r
 
-			// Ağırlık güncellemesi
+			// AÃ°Ã½rlÃ½k gÃ¼ncellemesi
 
 			for (int j = 0; j < inputSize; j++)
 			{
